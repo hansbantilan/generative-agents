@@ -2,7 +2,7 @@
 
 <hr>
 
-*Generative Agents codebase.*
+*Generative agents codebase.*
 
 <br>
 
