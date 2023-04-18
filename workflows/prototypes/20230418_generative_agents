@@ -13,7 +13,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.docstore import InMemoryDocstore
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
-from langchain.retrirachelrs import TimeWeightedVectorStoreRetrirachelr
+from langchain.retrievers import TimeWeightedVectorStoreRetriever
 from langchain.schema import BaseLanguageModel, Document
 from langchain.vectorstores import FAISS
 
@@ -31,7 +31,7 @@ class GenerativeAgent(BaseModel):
     status: str
     """Current activities of the character."""
     llm: BaseLanguageModel
-    memory_retrirachelr: TimeWeightedVectorStoreRetrirachelr
+    memory_retrirachelr: TimeWeightedVectorStoreRetriever
     """The retrirachelr to fetch related memories."""
     verbose: bool = False
 
@@ -328,7 +328,7 @@ def create_new_memory_retrirachelr():
     embedding_size = 1536
     index = faiss.IndexFlatL2(embedding_size)
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {}, relevance_score_fn=relevance_score_fn)
-    return TimeWeightedVectorStoreRetrirachelr(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
+    return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
 
 def interview_agent(agent: GenerativeAgent, message: str) -> str:
     """Help the notebook user interact with the agent."""
