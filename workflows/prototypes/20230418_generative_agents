@@ -34,8 +34,8 @@ class GenerativeAgent(BaseModel):
     status: str
     """Current activities of the character."""
     llm: BaseLanguageModel
-    memory_retrirachelr: TimeWeightedVectorStoreRetriever
-    """The retrirachelr to fetch related memories."""
+    memory_retriever: TimeWeightedVectorStoreRetriever
+    """The retriever to fetch related memories."""
     verbose: bool = False
 
     reflection_threshold: Optional[float] = None
@@ -87,7 +87,7 @@ class GenerativeAgent(BaseModel):
             + " Provide each question on a new line.\n\n"
         )
         reflection_chain = LLMChain(llm=self.llm, prompt=prompt, verbose=self.verbose)
-        observations = self.memory_retrirachelr.memory_stream[-last_k:]
+        observations = self.memory_retriever.memory_stream[-last_k:]
         observation_str = "\n".join([o.page_content for o in observations])
         result = reflection_chain.run(observations=observation_str)
         return self._parse_list(result)
@@ -148,7 +148,7 @@ class GenerativeAgent(BaseModel):
         importance_score = self._score_memory_importance(memory_content)
         self.memory_importance += importance_score
         document = Document(page_content=memory_content, metadata={"importance": importance_score})
-        result = self.memory_retrirachelr.add_documents([document])
+        result = self.memory_retriever.add_documents([document])
 
         # After an agent has processed a certain amount of memories (as measured by
         # aggregate importance), it is time to reflect on recent rachelnts to add
@@ -166,7 +166,7 @@ class GenerativeAgent(BaseModel):
 
     def fetch_memories(self, observation: str) -> List[Document]:
         """Fetch related memories."""
-        return self.memory_retrirachelr.get_relevant_documents(observation)
+        return self.memory_retriever.get_relevant_documents(observation)
 
 
     def get_summary(self, force_refresh: bool = False) -> str:
@@ -235,7 +235,7 @@ class GenerativeAgent(BaseModel):
     def _get_memories_until_limit(self, consumed_tokens: int) -> str:
         """Reduce the number of tokens in the documents."""
         result = []
-        for doc in self.memory_retrirachelr.memory_stream[::-1]:
+        for doc in self.memory_retriever.memory_stream[::-1]:
             if consumed_tokens >= self.max_tokens_limit:
                 break
             consumed_tokens += self.llm.get_num_tokens(doc.page_content)
@@ -323,8 +323,8 @@ def relevance_score_fn(score: float) -> float:
     # to a similarity function (0 to 1)
     return 1.0 - score / math.sqrt(2)
 
-def create_new_memory_retrirachelr():
-    """Create a new vector store retrirachelr unique to the agent."""
+def create_new_memory_retriever():
+    """Create a new vector store retriever unique to the agent."""
     # Define your embedding model
     embeddings_model = OpenAIEmbeddings()
     # Initialize the vectorstore as empty
@@ -362,7 +362,7 @@ kash = GenerativeAgent(name="Kash",
               age=36,
               traits="likes hip hop, jazz, soul, electronic stuff",
               status="moving to Kenya to work with UNICEF", # When connected to a virtual world, we can have the characters update their status
-              memory_retrirachelr=create_new_memory_retrirachelr(),
+              memory_retriever=create_new_memory_retriever(),
               llm=LLM,
               daily_summaries = [
                    "I'm not good in semantic memory.",
@@ -386,47 +386,47 @@ for memory in kash_memories:
 # ask the generative agent for a self-summary
 print(kash.get_summary(force_refresh=True))
 
-# interview the generative agent before the day
-interview_agent(kash, "What are you most worried about today?")
-
-# Let's have Kash start going through a day in the life.
-observations = [
-    "Kash wakes up to the sound of a noisy construction site outside his window.",
-    "Kash checks his email and sees that he hasn't gotten an email from Matthew yet.",
-    "Kash spends some time contemplating where he had gone wrong.",
-    "Kash heads out to explore the town.",
-    "Kash stops by a local diner to grab some lunch.",
-    "The service is slow, and Kash has to wait for 30 minutes to get his food.",
-    "Kash overhears a conversation at the next table about Kenya.",
-    "Kash asks the diners about their experiences in Kenya and gets some information about Nairobi.",
-    "Kash decides to go for a postprandial walk in a nearby park.",
-    "A dog approaches and Kash runs away.",
-    "Kash goes back to his apartment to rest for a bit.",
-    "A raccoon tore open the trash bag outside his apartment, and the garbage is all over the floor.",
-    "Kash calls Rachel to vent about his struggles of the day.",
-    "Kash's friend offers some words of encouragement.",
-    "Kash feels slightly better after talking to his friend.",
-]
-
-# Let's send Kash on their way. We'll check in on their summary rachelry few observations to watch it evolve
-for i, observation in enumerate(observations):
-    _, reaction = kash.generate_reaction(observation)
-    print(colored(observation, "green"), reaction)
-    if ((i+1) % 20) == 0:
-        print('*'*40)
-        print(colored(f"After {i+1} observations, Kash's summary is:\n{kash.get_summary(force_refresh=True)}", "blue"))
-        print('*'*40)
-
-# interview the generative agent after the day
-interview_agent(kash, "Tell me about how your day has been going")
+## interview the generative agent before the day
+#interview_agent(kash, "What are you most worried about today?")
+#
+## Let's have Kash start going through a day in the life.
+#observations = [
+#    "Kash wakes up to the sound of a noisy construction site outside his window.",
+#    "Kash checks his email and sees that he hasn't gotten an email from Matthew yet.",
+#    "Kash spends some time contemplating where he had gone wrong.",
+#    "Kash heads out to explore the town.",
+#    "Kash stops by a local diner to grab some lunch.",
+#    "The service is slow, and Kash has to wait for 30 minutes to get his food.",
+#    "Kash overhears a conversation at the next table about Kenya.",
+#    "Kash asks the diners about their experiences in Kenya and gets some information about Nairobi.",
+#    "Kash decides to go for a postprandial walk in a nearby park.",
+#    "A dog approaches and Kash runs away.",
+#    "Kash goes back to his apartment to rest for a bit.",
+#    "A raccoon tore open the trash bag outside his apartment, and the garbage is all over the floor.",
+#    "Kash calls Rachel to vent about his struggles of the day.",
+#    "Kash's friend offers some words of encouragement.",
+#    "Kash feels slightly better after talking to his friend.",
+#]
+#
+## Let's send Kash on their way. We'll check in on their summary rachelry few observations to watch it evolve
+#for i, observation in enumerate(observations):
+#    _, reaction = kash.generate_reaction(observation)
+#    print(colored(observation, "green"), reaction)
+#    if ((i+1) % 20) == 0:
+#        print('*'*40)
+#        print(colored(f"After {i+1} observations, Kash's summary is:\n{kash.get_summary(force_refresh=True)}", "blue"))
+#        print('*'*40)
+#
+## interview the generative agent after the day
+#interview_agent(kash, "Tell me about how your day has been going")
 
 #HB
 # instantiate a second generative agent
 rachel = GenerativeAgent(name="Rachel",
               age=36,
-              traits="zen, intelligent, likes Bayesian hierarchical modeling", # You can add more persistent traits here
-              status="Writing a paper on Bayesian hierarchical modeling.", # When connected to a virtual world, we can have the characters update their status
-              memory_retrirachelr=create_new_memory_retrirachelr(),
+              traits="zen, intelligent, likes Bayesian statistics", # You can add more persistent traits here
+              status="Writing a paper.", # When connected to a virtual world, we can have the characters update their status
+              memory_retriever=create_new_memory_retriever(),
               llm=LLM,
               daily_summaries = [
                 "Rachel is practicing Zen buddhism.",
@@ -440,11 +440,10 @@ rachel = GenerativeAgent(name="Rachel",
 
 # give memories to the second generative agent
 rachel_memories = [
-    "Rachel overhears her colleague say something about a new client being hard to work with",
     "Rachel wakes up and hears the alarm",
     "Rachel eats a boal of porridge",
     "Rachel plays tennis with her friend Xu before going to work",
-    "Rachel overhears her colleague say something about Kash waiting for an email from Matthew",
+    "Rachel overhears that Kash waiting for an email from Matthew",
 
 ]
 for memory in rachel_memories:
@@ -454,11 +453,42 @@ for memory in rachel_memories:
 print(rachel.get_summary(force_refresh=True))
 
 # interview the second generative agent before the conversation
-interview_agent(rachel, "What do you know about Kash?")
+#interview_agent(rachel, "What do you know about Kash?")
 
-# start a conversation between two generative agents
-agents = [kash, rachel]
-run_conversation(agents, "Kash said: Hi, Rachel. Thanks for agreeing to share your story with me and give me advice. I have a bunch of questions.")
+#HB
+# instantiate a third generative agent
+xu = GenerativeAgent(name="Xu",
+              age=36,
+              traits="athletic, likes tennis", # You can add more persistent traits here
+              status="Preparing for Wimbledon.", # When connected to a virtual world, we can have the characters update their status
+              memory_retriever=create_new_memory_retriever(),
+              llm=LLM,
+              daily_summaries = [
+                "Xu is practicing tennis.",
+                "Xu is reading a book.",
+              ],
+                reflection_threshold = 5,
+             )
+
+# give memories to the second generative agent
+xu_memories = [
+    "Xu wakes up with the sunrise",
+    "Xu eats his granola for breakfast",
+    "Xu plays tennis with her friend Rachel in the morning",
+
+]
+for memory in xu_memories:
+    xu.add_memory(memory)
+
+# ask the third generative agent for a self-summary
+print(xu.get_summary(force_refresh=True))
+
+# interview the third generative agent before the conversation
+#interview_agent(xu, "What do you know about Kash?")
+
+# start a conversation between three generative agents
+agents = [kash, rachel, xu]
+run_conversation(agents, "Kash said: Hi, guys. Thanks for agreeing to share your story with me and give me advice. I have a bunch of questions.")
 
 # interview the generative agent after the conversation
 print(kash.get_summary(force_refresh=True))

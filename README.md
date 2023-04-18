@@ -10,6 +10,7 @@
 
 `langchain-agents` is a package that contains:
 
+- Agent classes
 - Workflow scripts
 
 ## Documentation
