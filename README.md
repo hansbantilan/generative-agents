@@ -1,14 +1,14 @@
-## Generative-Agents
+## LangChain-Agents
 
 <hr>
 
-*Generative agents codebase.*
+*LangChain agents codebase.*
 
 <br>
 
 [![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
-`generative-agents` is a package that contains:
+`langchain-agents` is a package that contains:
 
 - Workflow scripts
 
