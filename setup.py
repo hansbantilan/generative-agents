@@ -3,14 +3,14 @@ from glob import glob
 from setuptools import find_packages, setup
 
 setup(
-    name="generative-agents",
+    name="langchain-agents",
     version="0.1",
     packages=find_packages(),
     url="",
     license="",
     author="",
     author_email="",
-    description="Generative Agents libraries",
+    description="LangChain-Agents libraries",
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     data_files=[
