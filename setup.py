@@ -25,6 +25,7 @@ setup(
         "mac": [],
         "linux": [
             "termcolor==2.2.0",
+            "faiss==1.5.3",
         ],
     },
 )
