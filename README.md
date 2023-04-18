@@ -1,4 +1,4 @@
-## GPT-mini
+## Generative-Agents
 
 <hr>
 
