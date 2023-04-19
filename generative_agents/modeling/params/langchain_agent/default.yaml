@@ -7,8 +7,92 @@ data_output_dir : "tmp"
 ### model parameters ###
 conversation_starter: "Kash said: Hi, guys. Thanks for agreeing to give me advice. I have a bunch of questions."
 interview_question: "How was your conversation?"
-agents: 
-    kash: 
+agents:
+    amrita:
+        name: "GPT-Amrita"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Amrita remembers having rice."
+        observations:
+            - "Nothing yet"
+    billy:
+        name: "GPT-Billy"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Billy remembers having rice."
+        observations:
+            - "Nothing yet"
+    gulce:
+        name: "GPT-Gulce"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Gulce remembers having rice."
+        observations:
+            - "Nothing yet"
+    hans:
+        name: "GPT-Hans"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Hans remembers having rice."
+        observations:
+            - "Nothing yet"
+    humzah:
+        name: "GPT-Humzah"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Humzah remembers having rice."
+        observations:
+            - "Nothing yet"
+    jennsen:
+        name: "GPT-Jennsen"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Jennsen remembers having rice."
+        observations:
+            - "Nothing yet"
+    jileni:
+        name: "GPT-Jileni"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Jileni remembers having rice."
+        observations:
+            - "Nothing yet"
+    kash:
         name: "Kash"
         age: 36
         traits: "likes hip hop, jazz, soul, electronic stuff"
@@ -18,7 +102,7 @@ agents:
             - "I'm good in episodic memory."
             - "Have you eaten rice today?"
         reflection_threshold: 8
-        memories: 
+        memories:
             - "Kash remembers learning how to use the abacus when he was young."
             - "Kash learns quantile treatment effects QTE from Rachel."
             - "Kash programs in Python."
