@@ -10,7 +10,7 @@ setup(
     license="",
     author="",
     author_email="",
-    description="Generative-Agents libraries",
+    description="Generative Agents libraries",
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     data_files=[

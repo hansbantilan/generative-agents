@@ -1,0 +1,46 @@
+### agent version ###
+experiment_name: "Generative Agents"
+run_name: "langchain_agent"
+model_output_dir: "tmp/langchain_agent"
+data_output_dir : "tmp"
+
+### model parameters ###
+conversation_starter: "Kash said: Hi, guys. Thanks for agreeing to give me advice. I have a bunch of questions."
+interview_question: "How was your conversation?"
+agents: 
+    kash: 
+        name: "Kash"
+        age: 36
+        traits: "likes hip hop, jazz, soul, electronic stuff"
+        status: "moving to Kenya to work with UNICEF"
+        daily_summaries:
+            - "I'm not good in semantic memory."
+            - "I'm good in episodic memory."
+            - "Have you eaten rice today?"
+        reflection_threshold: 8
+        memories: 
+            - "Kash remembers learning how to use the abacus when he was young."
+            - "Kash learns quantile treatment effects QTE from Rachel."
+            - "Kash programs in Python."
+            - "Kash uses R when needed."
+            - "Kash doesn't use Stata."
+        observations:
+            - "Kash wakes up to the sound of a noisy construction site outside his window."
+            - "Kash checks his email and sees that he hasn't gotten an email from Matthew yet."
+    rachel:
+        name: "Rachel"
+        age: 36
+        traits: "zen, intelligent, likes Bayesian statistics"
+        status: "Writing a paper."
+        daily_summaries:
+            - "Rachel is practicing Zen buddhism."
+            - "Rachel is hiking."
+            - "Rachel is birdwatching."
+            - "Rachel is doing taekwondo."
+            - "Rachel is having twitter arguments about statistics."
+        reflection_threshold: 50
+        memories:
+            - "Rachel teaches Kash quantile treatment effects."
+        observations:
+            - "Rachel wakes up and hears the alarm."
+            - "Rachel eats a boal of porridge."

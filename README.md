@@ -1,4 +1,4 @@
-## Generative-Agents
+## Generative Agents
 
 <hr>
 
@@ -43,4 +43,5 @@ pytest
 
 Running locally:
 ```
+
 ```
