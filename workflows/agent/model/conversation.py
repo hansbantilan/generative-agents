@@ -45,13 +45,11 @@ for agent_key in params["agents"].keys():
     for memory in _params["memories"]:
         agent.add_memory(memory)
 
-log.info(
-    f"Starting a conversation between agents...\n\n{params['conversation_starter']}"
-)
+log.info(f"Starting a conversation between agents...\n{params['conversation_starter']}")
 run_conversation(agents, params["conversation_starter"])
 
 log.info(
-    f"\nInterviewing each agent after the conversation...\n\n{params['interview_question']}"
+    f"Interviewing each agent after the conversation...\n{params['interview_question']}"
 )
 for agent in agents:
     print(interview_agent(agent, params["interview_question"]))
