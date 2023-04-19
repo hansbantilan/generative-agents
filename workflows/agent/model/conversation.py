@@ -27,8 +27,8 @@ params = load_params(
 agents = list()
 for agent_key in params["agents"].keys():
     _params = params["agents"][agent_key]
-    log.info(f"Instantiating agent: {_params['name']}...")
 
+    log.info(f"Instantiating agent: {_params['name']}...")
     agent = GenerativeAgent(
         name=_params["name"],
         age=_params["age"],
@@ -41,11 +41,17 @@ for agent_key in params["agents"].keys():
     )
     agents.append(agent)
 
-log.info(f"Starting a conversation between agents...\n{params['conversation_starter']}")
+    log.info(f"  Adding {_params['name']}'s memories...")
+    for memory in _params["memories"]:
+        agent.add_memory(memory)
+
+log.info(
+    f"Starting a conversation between agents...\n\n{params['conversation_starter']}"
+)
 run_conversation(agents, params["conversation_starter"])
 
 log.info(
-    f"Interviewing each agent after the conversation...\n{params['interview_question']}"
+    f"\nInterviewing each agent after the conversation...\n\n{params['interview_question']}"
 )
 for agent in agents:
     print(interview_agent(agent, params["interview_question"]))
