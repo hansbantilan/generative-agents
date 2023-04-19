@@ -21,7 +21,7 @@ from langchain.schema import BaseLanguageModel, Document
 from langchain.vectorstores import FAISS
 
 
-USER_NAME = "HB" # The name you want to use when interviewing the agent.
+USER_NAME = "superuser" # The name you want to use when interviewing the agent.
 LLM = ChatOpenAI(max_tokens=1500) # Can be any LLM you want.
 
 class GenerativeAgent(BaseModel):
