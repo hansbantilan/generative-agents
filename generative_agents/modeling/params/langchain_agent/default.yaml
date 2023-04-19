@@ -9,7 +9,7 @@ conversation_starter: "Kash said: Hi, guys. Thanks for agreeing to give me advic
 interview_question: "How was your conversation?"
 agents:
     amrita:
-        name: "GPT-Amrita"
+        name: "AP"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -21,7 +21,7 @@ agents:
         observations:
             - "Nothing yet"
     billy:
-        name: "GPT-Billy"
+        name: "YZ"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -33,7 +33,7 @@ agents:
         observations:
             - "Nothing yet"
     gulce:
-        name: "GPT-Gulce"
+        name: "GK"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -45,7 +45,7 @@ agents:
         observations:
             - "Nothing yet"
     hans:
-        name: "GPT-Hans"
+        name: "HB"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -57,7 +57,7 @@ agents:
         observations:
             - "Nothing yet"
     humzah:
-        name: "GPT-Humzah"
+        name: "HM"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -69,7 +69,7 @@ agents:
         observations:
             - "Nothing yet"
     jennsen:
-        name: "GPT-Jennsen"
+        name: "JF"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -81,7 +81,7 @@ agents:
         observations:
             - "Nothing yet"
     jileni:
-        name: "GPT-Jileni"
+        name: "JZ"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -92,8 +92,20 @@ agents:
             - "Jileni remembers having rice."
         observations:
             - "Nothing yet"
+    matthew:
+        name: "MK"
+        age: 99
+        traits: "chill"
+        status: "chilling"
+        daily_summaries:
+            - "Have you eaten rice today?"
+        reflection_threshold: 10
+        memories:
+            - "Matthew remembers having rice."
+        observations:
+            - "Nothing yet"
     kash:
-        name: "Kash"
+        name: "KR"
         age: 36
         traits: "likes hip hop, jazz, soul, electronic stuff"
         status: "moving to Kenya to work with UNICEF"
@@ -112,7 +124,7 @@ agents:
             - "Kash wakes up to the sound of a noisy construction site outside his window."
             - "Kash checks his email and sees that he hasn't gotten an email from Matthew yet."
     rachel:
-        name: "Rachel"
+        name: "RM"
         age: 36
         traits: "zen, intelligent, likes Bayesian statistics"
         status: "Writing a paper."
