@@ -9,7 +9,7 @@ conversation_starter: "Kash said: Hi, guys. Thanks for agreeing to give me advic
 interview_question: "How was your conversation?"
 agents:
     amrita:
-        name: "AP"
+        name: "GPT-Amrita"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -21,7 +21,7 @@ agents:
         observations:
             - "Nothing yet"
     billy:
-        name: "YZ"
+        name: "GPT-Billy"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -33,7 +33,7 @@ agents:
         observations:
             - "Nothing yet"
     gulce:
-        name: "GK"
+        name: "GPT-Gulce"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -45,7 +45,7 @@ agents:
         observations:
             - "Nothing yet"
     hans:
-        name: "HB"
+        name: "GPT-Hans"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -57,7 +57,7 @@ agents:
         observations:
             - "Nothing yet"
     humzah:
-        name: "HM"
+        name: "GPT-Humzah"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -69,7 +69,7 @@ agents:
         observations:
             - "Nothing yet"
     jennsen:
-        name: "JF"
+        name: "GPT-Jennsen"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -81,7 +81,7 @@ agents:
         observations:
             - "Nothing yet"
     jileni:
-        name: "JZ"
+        name: "GPT-Jileni"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -93,7 +93,7 @@ agents:
         observations:
             - "Nothing yet"
     matthew:
-        name: "MK"
+        name: "GPT-Matthew"
         age: 99
         traits: "chill"
         status: "chilling"
@@ -105,7 +105,7 @@ agents:
         observations:
             - "Nothing yet"
     kash:
-        name: "KR"
+        name: "Kash"
         age: 36
         traits: "likes hip hop, jazz, soul, electronic stuff"
         status: "moving to Kenya to work with UNICEF"
@@ -124,7 +124,7 @@ agents:
             - "Kash wakes up to the sound of a noisy construction site outside his window."
             - "Kash checks his email and sees that he hasn't gotten an email from Matthew yet."
     rachel:
-        name: "RM"
+        name: "Rachel"
         age: 36
         traits: "zen, intelligent, likes Bayesian statistics"
         status: "Writing a paper."
