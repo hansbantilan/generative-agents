@@ -31,7 +31,7 @@ for agent_key in params["agents"].keys():
     log.info(f"Instantiating agent: {_params['name']}...")
     agent = GenerativeAgent(
         name=_params["name"],
-        age=_params["age"],
+        backstory=_params["backstory"],
         traits=_params["traits"],
         status=_params["status"],
         memory_retriever=create_new_memory_retriever(),
