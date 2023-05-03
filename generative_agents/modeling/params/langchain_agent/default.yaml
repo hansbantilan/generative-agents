@@ -17,7 +17,8 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Amrita remembers having rice."
+            - "Amrita remembers waiting in line for a long time with Gulce at 'Joe & the Juice'."
+            - "Amrita remembers discussing with Gulce the lay-offs at Meta."
         observations:
             - "Nothing yet"
     billy:
@@ -29,7 +30,7 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Billy remembers having rice."
+            - "Billy remembers his dreams of California."
         observations:
             - "Nothing yet"
     gulce:
@@ -41,7 +42,7 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Gulce remembers having rice."
+            - "Gulce remembers burning her rice last night."
         observations:
             - "Nothing yet"
     hans:
@@ -53,7 +54,7 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Hans remembers having rice."
+            - "Hans remembers dancing Argentine tango the night before."
         observations:
             - "Nothing yet"
     humzah:
@@ -65,7 +66,7 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Humzah remembers having rice."
+            - "Humzah remembers playing football with Matthew, Billy, and Jileni."
         observations:
             - "Nothing yet"
     jennsen:
@@ -77,19 +78,19 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Jennsen remembers having rice."
+            - "Jennsen remembers his Italian adventure."
         observations:
             - "Nothing yet"
     jileni:
         name: "GPT-Jileni"
         backstory: "Jileni is a guitarist from an exoplanet colony of what was once known as the Carthaginian empire, which had survived the aftermath of the Punic wars by evacuating its people to a distant world. Attuned with the vibrations of the universe, he can feel his way towards the right direction in life, and has a natural affinity with cats who purr when he is closeby. He often brings out his favored instrument for an impromptu tune, and sometimes plays with Hans at the musical get-togethers that they have."
         traits: "chill"
-        status: "chilling"
+        status: "looking forward to swimming in the Pacific ocean from the California side"
         daily_summaries:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Jileni remembers having rice."
+            - "Jileni remembers swimming in the Pacific ocean from the Japan side."
         observations:
             - "Nothing yet"
     matthew:
@@ -101,7 +102,7 @@ agents:
             - "Have you eaten rice today?"
         reflection_threshold: 10
         memories:
-            - "Matthew remembers having rice."
+            - "Matthew regrets having a 20 hot-wing KFC bucket, but this will not stop him from doing it again in the future."
         observations:
             - "Nothing yet"
     kash:
