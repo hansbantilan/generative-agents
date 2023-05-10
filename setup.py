@@ -20,6 +20,7 @@ setup(
         "pre-commit==3.2.0",
         "langchain==0.0.142",
         "openai==0.27.4",
+        "pinecone-client==2.2.1",
     ],
     extras_require={
         "mac": [],
