@@ -1,9 +1,12 @@
 ### c.f.
 ### https://python.langchain.com/en/latest/use_cases/agents/characters.html
+### https://docs.pinecone.io/docs/python-client#usage
 
+import os
 import re
 import math
 import faiss
+import pinecone
 
 from datetime import datetime, timedelta
 from typing import List, Optional, Tuple
@@ -18,7 +21,7 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
 from langchain.retrievers import TimeWeightedVectorStoreRetriever
 from langchain.schema import BaseLanguageModel, Document
-from langchain.vectorstores import FAISS
+from langchain.vectorstores import FAISS, Pinecone
 
 
 USER_NAME = "superuser" # The name you want to use when interviewing the agent.
@@ -421,6 +424,12 @@ print(kash.get_summary(force_refresh=True))
 #interview_agent(kash, "Tell me about how your day has been going")
 
 #HB
+# initialize pinecone
+pinecone.init(api_key=os.getenv("PINECONE_API_KEY"),
+              environment=os.getenv("PINECONE_ENV"))
+
+pinecone.create_index("generative-agents-index", dimension=1024)
+
 # instantiate a second generative agent
 rachel = GenerativeAgent(name="Rachel",
               age=36,
