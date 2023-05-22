@@ -428,7 +428,9 @@ print(kash.get_summary(force_refresh=True))
 pinecone.init(api_key=os.getenv("PINECONE_API_KEY"),
               environment=os.getenv("PINECONE_ENV"))
 
-pinecone.create_index("generative-agents-index", dimension=1024)
+# creates generative-agents-index if it doesn't already exist
+if "generative-agents-index" not in pinecone.list_indexes():
+    pinecone.create_index("generative-agents-index", dimension=1024)
 
 # instantiate a second generative agent
 rachel = GenerativeAgent(name="Rachel",
