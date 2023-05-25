@@ -1,10 +1,13 @@
 import math
 
 import faiss
+import pinecone
 from langchain.docstore import InMemoryDocstore
 from langchain.embeddings import OpenAIEmbeddings
-from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain.retrievers import TimeWeightedVectorStoreRetriever, PineconeHybridSearchRetriever
 from langchain.vectorstores import FAISS, Pinecone
+
+from pinecone_text.sparse import BM25Encoder
 
 
 def relevance_score_fn(score: float) -> float:
@@ -25,8 +28,13 @@ def create_new_memory_retriever(is_pinecone: bool) -> None:
     embedding_dim = 1536
     # Initialize the vectorstore as empty
     if is_pinecone:
-        vectorstore = Pinecone.from_existing_index(
-            "generative-agents-index", embeddings_model
+        index = pinecone.Index("generative-agents-index")
+        # use default tf-idf values
+        bm25_encoder = BM25Encoder().default()
+        return PineconeHybridSearchRetriever(
+            embeddings=embeddings_model,
+            sparse_encoder=bm25_encoder,
+            index=index,
         )
     else:
         index = faiss.IndexFlatL2(embedding_dim)
@@ -37,6 +45,7 @@ def create_new_memory_retriever(is_pinecone: bool) -> None:
             {},
             relevance_score_fn=relevance_score_fn,
         )
-    return TimeWeightedVectorStoreRetriever(
-        vectorstore=vectorstore, other_score_keys=["importance"], k=15
-    )
+        return TimeWeightedVectorStoreRetriever(
+            vectorstore=vectorstore, other_score_keys=["importance"], k=15
+        )
+

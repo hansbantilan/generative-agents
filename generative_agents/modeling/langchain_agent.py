@@ -1,23 +1,30 @@
 import re
+import os
 from datetime import datetime
 from typing import List, Optional, Tuple
 
 from langchain import LLMChain
 from langchain.base_language import BaseLanguageModel
 from langchain.prompts import PromptTemplate
-from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain.retrievers import TimeWeightedVectorStoreRetriever, PineconeHybridSearchRetriever
 from langchain.schema import Document
 from pydantic import BaseModel, Field
 from termcolor import colored
-
-from generative_agents.utility import logger
+from generative_agents.utility.utility import load_params
+from generative_agents.utility import logger, well_known_paths
 
 log = logger.init("langchain")
 
+is_pinecone = load_params(
+    os.path.join(
+        well_known_paths["PARAMS_DIR"],
+        "langchain_agent",
+        f"default.yaml",
+    )
+)["is_pinecone"]
 
 class GenerativeAgent(BaseModel):
     """A character with memory and innate characteristics."""
-
     name: str
     backstory: str
     """The backstory of the character."""
@@ -26,7 +33,7 @@ class GenerativeAgent(BaseModel):
     status: str
     """Current activities of the character."""
     llm: BaseLanguageModel
-    memory_retriever: TimeWeightedVectorStoreRetriever
+    memory_retriever: PineconeHybridSearchRetriever if is_pinecone else TimeWeightedVectorStoreRetriever
     """The retriever to fetch related memories."""
     verbose: bool = False
 
@@ -149,8 +156,15 @@ class GenerativeAgent(BaseModel):
         document = Document(
             page_content=memory_content, metadata={"importance": importance_score}
         )
-        result = self.memory_retriever.add_documents([document])
-
+        if is_pinecone:
+            result = self.memory_retriever.add_texts(document)  # for pinecone
+            # TODO (AP) Note this produces an error:
+            """
+            line 24, in create_index
+            _iterator = range(0, len(contexts), batch_size)
+            TypeError: object of type 'Document' has no len()"""
+        else:
+            result = self.memory_retriever.add_documents([document])
         # After an agent has processed a certain amount of memories (as measured by
         # aggregate importance), it is time to reflect on recent rachelnts to add
         # more synthesized memories to the agent's memory stream.

@@ -28,6 +28,7 @@ setup(
             "termcolor==2.2.0",
             "faiss-cpu==1.7.3",
             "tiktoken==0.3.3",
+            "pinecone-text==0.4.2"
         ],
     },
 )
