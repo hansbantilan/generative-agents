@@ -330,8 +330,8 @@ def create_new_memory_retriever():
     """Create a new vector store retriever unique to the agent."""
     # Define your embedding model
     embeddings_model = OpenAIEmbeddings()
-    # Initialize the vectorstore as empty
     embedding_size = 1536
+    # Initialize the vectorstore as empty
     index = faiss.IndexFlatL2(embedding_size)
     vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {}, relevance_score_fn=relevance_score_fn)
     return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
@@ -430,14 +430,14 @@ pinecone.init(api_key=os.getenv("PINECONE_API_KEY"),
 
 # creates generative-agents-index if it doesn't already exist
 if "generative-agents-index" not in pinecone.list_indexes():
-    pinecone.create_index("generative-agents-index", dimension=1024)
+    pinecone.create_index("generative-agents-index", dimension=1536)
 
 # instantiate a second generative agent
 rachel = GenerativeAgent(name="Rachel",
               age=36,
               traits="zen, intelligent, likes Bayesian statistics", # You can add more persistent traits here
               status="Writing a paper.", # When connected to a virtual world, we can have the characters update their status
-              memory_retriever=create_new_memory_retriever(),
+              memory_retriever=create_new_memory_retriever(is_pinecone=False),
               llm=LLM,
               daily_summaries = [
                 "Rachel is practicing Zen buddhism.",

@@ -18,7 +18,7 @@ setup(
     ],
     install_requires=[
         "pre-commit==3.2.0",
-        "langchain==0.0.142",
+        "langchain==0.0.180",
         "openai==0.27.4",
         "pinecone-client==2.2.1",
     ],

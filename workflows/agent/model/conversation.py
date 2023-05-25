@@ -1,5 +1,6 @@
 import os
 
+import pinecone
 from langchain.chat_models import ChatOpenAI
 
 from generative_agents.modeling.interactions import interview_agent, run_conversation
@@ -14,8 +15,7 @@ log = logger.init("conversation")
 log.info(f"Loading LLM...")
 llm = ChatOpenAI(max_tokens=1000)
 
-
-log.info(f"Loading parameters...")
+log.info(f"Loading Parameters...")
 params = load_params(
     os.path.join(
         well_known_paths["PARAMS_DIR"],
@@ -23,6 +23,15 @@ params = load_params(
         f"default.yaml",
     )
 )
+
+if params["is_pinecone"]:
+    log.info(f"Loading Pinecone Vector Database...")
+    pinecone.init(
+        api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv("PINECONE_ENV")
+    )
+    if "generative-agents-index" not in pinecone.list_indexes():
+        log.info(f"Creating generative-agents-index in Pinecone Vector Database...")
+        pinecone.create_index("generative-agents-index", dimension=1536)
 
 agents = list()
 for agent_key in params["agents"].keys():
@@ -34,7 +43,7 @@ for agent_key in params["agents"].keys():
         backstory=_params["backstory"],
         traits=_params["traits"],
         status=_params["status"],
-        memory_retriever=create_new_memory_retriever(),
+        memory_retriever=create_new_memory_retriever(params["is_pinecone"]),
         llm=llm,
         daily_summaries=_params["daily_summaries"],
         reflection_threshold=_params["reflection_threshold"],

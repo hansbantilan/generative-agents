@@ -1,10 +1,10 @@
 import math
-import faiss
 
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+import faiss
 from langchain.docstore import InMemoryDocstore
+from langchain.embeddings import OpenAIEmbeddings
 from langchain.retrievers import TimeWeightedVectorStoreRetriever
+from langchain.vectorstores import FAISS, Pinecone
 
 
 def relevance_score_fn(score: float) -> float:
@@ -17,12 +17,26 @@ def relevance_score_fn(score: float) -> float:
     # to a similarity function (0 to 1)
     return 1.0 - score / math.sqrt(2)
 
-def create_new_memory_retriever():
+
+def create_new_memory_retriever(is_pinecone: bool) -> None:
     """Create a new vector store retriever unique to the agent."""
     # Define your embedding model
     embeddings_model = OpenAIEmbeddings()
+    embedding_dim = 1536
     # Initialize the vectorstore as empty
-    embedding_size = 1536
-    index = faiss.IndexFlatL2(embedding_size)
-    vectorstore = FAISS(embeddings_model.embed_query, index, InMemoryDocstore({}), {}, relevance_score_fn=relevance_score_fn)
-    return TimeWeightedVectorStoreRetriever(vectorstore=vectorstore, other_score_keys=["importance"], k=15)
+    if is_pinecone:
+        vectorstore = Pinecone.from_existing_index(
+            "generative-agents-index", embeddings_model
+        )
+    else:
+        index = faiss.IndexFlatL2(embedding_dim)
+        vectorstore = FAISS(
+            embeddings_model.embed_query,
+            index,
+            InMemoryDocstore({}),
+            {},
+            relevance_score_fn=relevance_score_fn,
+        )
+    return TimeWeightedVectorStoreRetriever(
+        vectorstore=vectorstore, other_score_keys=["importance"], k=15
+    )
