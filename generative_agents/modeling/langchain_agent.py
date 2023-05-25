@@ -288,14 +288,14 @@ class GenerativeAgent(BaseModel):
 
     def generate_reaction(self, observation: str) -> Tuple[bool, str]:
         """React to a given observation."""
-        call_to_action_template = (
+        suffix = (
             "Should {agent_name} react to the observation, and if so,"
             + " what would be an appropriate reaction? Respond in one line."
             + ' If the action is to engage in dialogue, write:\nSAY: "what to say"'
             + "\notherwise, write:\nREACT: {agent_name}'s reaction (if anything)."
             + "\nEither do nothing, react, or say something but not both.\n\n"
         )
-        full_result = self._generate_reaction(observation, call_to_action_template)
+        full_result = self._generate_reaction(observation, suffix)
         result = full_result.strip().split("\n")[0]
         self.add_memory(f"{self.name} observed {observation} and reacted by {result}")
         if "REACT:" in result:
@@ -309,8 +309,8 @@ class GenerativeAgent(BaseModel):
 
     def generate_dialogue_response(self, observation: str) -> Tuple[bool, str]:
         """React to a given observation."""
-        call_to_action_template = 'What would {agent_name} say? To end the conversation, write: GOODBYE: "what to say". Otherwise to continue the conversation, write: SAY: "what to say next"\n\n'
-        full_result = self._generate_reaction(observation, call_to_action_template)
+        suffix = 'What would {agent_name} say? To end the conversation, write: GOODBYE: "what to say". Otherwise to continue the conversation, write: SAY: "what to say next"\n\n'
+        full_result = self._generate_reaction(observation, suffix)
         result = full_result.strip().split("\n")[0]
         if "GOODBYE:" in result:
             farewell = result.split("GOODBYE:")[-1].strip()
@@ -324,3 +324,20 @@ class GenerativeAgent(BaseModel):
             return True, f"{self.name} said {response_text}"
         else:
             return False, result
+
+    def get_penpal_answer(self, observation: str, params: dict) -> Tuple[bool, str]:
+        suffix = f"What would {self.name} say as a {params['level']} speaker of {params['language']}? To end the conversation, write: GOODBYE: 'what to say'. Otherwise to continue the conversation, write: SAY: 'what to say next'\n\n"
+        full_result = self._generate_reaction(observation, suffix)
+        result = full_result.strip().split("\n")[0]
+        if "GOODBYE:" in result:
+            farewell = result.split("GOODBYE:")[-1].strip()
+            self.add_memory(f"{self.name} observed {observation} and said {farewell}")
+            return f"{self.name} said {farewell}"
+        if "SAY:" in result:
+            response_text = result.split("SAY:")[-1].strip()
+            self.add_memory(
+                f"{self.name} observed {observation} and said {response_text}"
+            )
+            return f"{self.name} said {response_text}"
+        else:
+            return result
