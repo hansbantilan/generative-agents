@@ -38,6 +38,7 @@ def load_agent(params, llm):
 
     log.info(f"  Adding {params['name']}'s memories...")
     for memory in params["memories"]:
+        log.info(f"Adding memory {memory}")
         agent.add_memory(memory)
 
     return agent
