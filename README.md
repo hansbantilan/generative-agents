@@ -46,4 +46,6 @@ Running locally:
 python workflows/agent/model/conversation.py
 
 python workflows/agent/model/penpal.py
+
+streamlit run generative_agents/demo/penpal_app.py
 ```
