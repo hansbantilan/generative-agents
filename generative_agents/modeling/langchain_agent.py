@@ -70,7 +70,9 @@ class GenerativeAgent(BaseModel):
         chain = LLMChain(llm=self.llm, prompt=prompt, verbose=self.verbose)
         return chain.run(name=self.name, related_memories=relevant_memories_str).strip()
 
-    def _get_topics_of_reflection(self, last_k: int = 50) -> Tuple[str, str, str]:
+    def _get_topics_of_reflection(
+        self, last_k: int = 50, is_generic: bool = False
+    ) -> Tuple[str, str, str]:
         """Return the 3 most salient high-lrachell questions about recent observations."""
         prompt = PromptTemplate.from_template(
             "{observations}\n\n"
@@ -79,9 +81,15 @@ class GenerativeAgent(BaseModel):
             + " Provide each question on a new line.\n\n"
         )
         reflection_chain = LLMChain(llm=self.llm, prompt=prompt, verbose=self.verbose)
-        observations = self.memory_retriever.memory_stream[-last_k:]
-        observation_str = "\n".join([o.page_content for o in observations])
-        result = reflection_chain.run(observations=observation_str)
+        if is_generic:
+            memories = self.memory_retriever.get_relevant_documents(
+                query="important memory"
+            )
+        else:
+            memories = self.memory_retriever.memory_stream[-last_k:]
+        memories_str = "\n".join([memory.page_content for memory in memories])
+        log.info(f"  Important Memories:\n {memories_str}")
+        result = reflection_chain.run(observations=memories_str)
         return self._parse_list(result)
 
     def _get_insights_on_topic(self, topic: str) -> List[str]:
@@ -106,11 +114,11 @@ class GenerativeAgent(BaseModel):
         # TODO: Parse the connections between memories and insights
         return self._parse_list(result)
 
-    def pause_to_reflect(self) -> List[str]:
+    def pause_to_reflect(self, is_generic: bool) -> List[str]:
         """Reflect on recent observations and generate 'insights'."""
         print(colored(f"Character {self.name} is reflecting", "blue"))
         new_insights = []
-        topics = self._get_topics_of_reflection()
+        topics = self._get_topics_of_reflection(is_generic=is_generic)
         for topic in topics:
             insights = self._get_insights_on_topic(topic)
             for insight in insights:
@@ -160,15 +168,17 @@ class GenerativeAgent(BaseModel):
         ):
             old_status = self.status
             self.status = "Reflecting"
-            # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
-            # self.pause_to_reflect()
+            self.pause_to_reflect(is_generic=True)
             self.memory_importance = 0.0
             self.status = old_status
         return result
 
     def fetch_memories(self, observation: str) -> List[Document]:
         """Fetch related memories."""
-        return self.memory_retriever.get_relevant_documents(observation)
+        memories = self.memory_retriever.get_relevant_documents(query=observation)
+        memories_str = "\n".join([memory.page_content for memory in memories])
+        log.info(f"  Relevant Memories:\n {memories_str}")
+        return memories
 
     def get_summary(self, force_refresh: bool = False) -> str:
         """Return a descriptive summary of the agent."""
