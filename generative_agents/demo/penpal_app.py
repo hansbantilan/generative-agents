@@ -28,16 +28,6 @@ customization_options = load_params(os.path.join(
 
 customization_options_changed = False
 
-cefr_level = st.sidebar.selectbox("CEFR Level", customization_options["cefr_levels"])
-meet_location = st.sidebar.selectbox("meet_location", customization_options["meet_locations"])
-
-if "meet_location" not in st.session_state:
-    st.session_state["meet_location"] = meet_location
-
-if meet_location != st.session_state["meet_location"]:
-    customization_options_changed = True
-    st.session_state["meet_location"] = meet_location
-
 params = load_params(
         os.path.join(
             well_known_paths["PARAMS_DIR"],
@@ -46,12 +36,35 @@ params = load_params(
         )
     )
 
-params['level'] = cefr_level # override default level with user customization
+cefr_level = st.sidebar.selectbox("CEFR Level", customization_options["cefr_levels"])
+meet_location = st.sidebar.selectbox("Location of meetup", customization_options["meet_locations"])
+name = st.sidebar.text_input("Name", value=customization_options["default_name"])
 
+if "meet_location" not in st.session_state:
+    st.session_state["meet_location"] = meet_location
+
+if meet_location != st.session_state["meet_location"]:
+    customization_options_changed = True
+    st.session_state["meet_location"] = meet_location
+
+if "name" not in st.session_state:
+    st.session_state["name"] = customization_options["default_name"]
+
+# customizable_params = {}
+
+if name != st.session_state["name"]:
+    customization_options_changed = True
+    st.session_state["name"] = name
+    log.info("Updating name of agent")
+    params["name"] = name
+
+
+params["level"] = cefr_level # override default level with user customization
 
 ### Setup agent ###
 @st.cache_resource
-def setup_agent(cefr_level):
+def setup_agent(params):
+    log.info(f"params: {params}")
     llm = load_llm()
 
     if params["is_pinecone"]:
@@ -60,7 +73,7 @@ def setup_agent(cefr_level):
     agent = load_agent(params, llm)
     return agent
 
-agent = setup_agent(cefr_level)
+agent = setup_agent(params)
 
 if "generated" not in st.session_state:
     st.session_state["generated"] = []

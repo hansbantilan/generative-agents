@@ -13,3 +13,4 @@ meet_locations:
     - "Cinema"
     - "Park"
 
+default_name: "Sally"

@@ -24,20 +24,26 @@ def load_pinecone():
         pinecone.create_index("generative-agents-index", dimension=1536)
 
 def load_agent(params, llm):
-    log.info(f"Instantiating agent: {params['name']}...")
+    name = params["name"]
+    log.info(f"Instantiating agent: {name}...")
+    backstory = params["backstory"].replace("EF-PenPal", name)
+    traits = params["traits"].replace("EF-PenPal", name)
+    status = params["status"].replace("EF-PenPal", name)
+    daily_summaries = [summary.replace("EF-PenPal", name) for summary in params["daily_summaries"]]
     agent = GenerativeAgent(
-        name=params["name"],
-        backstory=params["backstory"],
-        traits=params["traits"],
-        status=params["status"],
+        name=name,
+        backstory=backstory,
+        traits=traits,
+        status=status,
         memory_retriever=create_new_memory_retriever(params["is_pinecone"]),
         llm=llm,
-        daily_summaries=params["daily_summaries"],
+        daily_summaries=daily_summaries,
         reflection_threshold=params["reflection_threshold"],
     )
 
-    log.info(f"  Adding {params['name']}'s memories...")
-    for memory in params["memories"]:
+    memories = [m.replace("EF-PenPal", name) for m in params["memories"]]
+    log.info("Memories:", memories)
+    for memory in memories:
         log.info(f"Adding memory {memory}")
         agent.add_memory(memory)
 
