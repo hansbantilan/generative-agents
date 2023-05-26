@@ -5,7 +5,7 @@ model_output_dir: "tmp/penpal_agent"
 data_output_dir : "tmp"
 
 ### model parameters ###
-is_pinecone: False
+is_pinecone: True
 question: "How was your trip to Spain?"
 language: "English"
 level: "beginner"
