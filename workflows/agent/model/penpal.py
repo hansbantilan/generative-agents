@@ -1,11 +1,12 @@
 import os
 
+from generative_agents.modeling.agent_helpers import load_agent, load_llm, load_pinecone
 from generative_agents.modeling.interactions import talk_to_penpal
-from generative_agents.modeling.agent_helpers import load_llm, load_pinecone, load_agent
 from generative_agents.utility import logger, well_known_paths
 from generative_agents.utility.utility import load_params
 
 log = logger.init("conversation")
+
 
 def main():
     llm = load_llm()
@@ -23,7 +24,7 @@ def main():
     agent = load_agent(params, llm)
 
     log.info(f"Talking to {params['name']}...\n{params['user_input']}")
-    print(talk_to_penpal(agent, params))
+    print(talk_to_penpal(agent, params["user_input"], params))
 
 
 if __name__ == "__main__":

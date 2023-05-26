@@ -160,8 +160,7 @@ class GenerativeAgent(BaseModel):
         ):
             old_status = self.status
             self.status = "Reflecting"
-            # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
-            # self.pause_to_reflect()
+            self.pause_to_reflect()
             self.memory_importance = 0.0
             self.status = old_status
         return result
