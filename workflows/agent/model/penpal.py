@@ -1,6 +1,6 @@
 import os
 
-from generative_agents.modeling.interactions import ask_penpal
+from generative_agents.modeling.interactions import talk_to_penpal
 from generative_agents.modeling.agent_helpers import load_llm, load_pinecone, load_agent
 from generative_agents.utility import logger, well_known_paths
 from generative_agents.utility.utility import load_params
@@ -22,8 +22,8 @@ def main():
         load_pinecone()
     agent = load_agent(params, llm)
 
-    log.info(f"Asking {params['name']} the following question...\n{params['question']}")
-    print(ask_penpal(agent, params))
+    log.info(f"Talking to {params['name']}...\n{params['user_input']}")
+    print(talk_to_penpal(agent, params))
 
 
 if __name__ == "__main__":

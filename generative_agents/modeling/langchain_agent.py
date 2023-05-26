@@ -328,7 +328,7 @@ class GenerativeAgent(BaseModel):
             return False, result
 
     def get_penpal_answer(self, observation: str, params: dict) -> Tuple[bool, str]:
-        suffix = f"What would {self.name} say as a {params['level']} speaker of {params['language']}? To end the conversation, write: GOODBYE: 'what to say'. Otherwise to continue the conversation, write: SAY: 'what to say next'\n\n"
+        suffix = f"What would {self.name} say? {self.name} responds in the language delimited by triple backticks at a level of proficiency delimited by triple carats. To end the conversation, write: GOODBYE: 'what to say'. Otherwise to continue the conversation, write: SAY: 'what to say next'\n```{params['language']}```\n^^^{params['level']}^^^\n\n"
         full_result = self._generate_reaction(observation, suffix)
         result = full_result.strip().split("\n")[0]
         if "GOODBYE:" in result:

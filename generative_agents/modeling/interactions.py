@@ -2,11 +2,11 @@ from typing import List
 
 from generative_agents.modeling.langchain_agent import GenerativeAgent
 
-user_name = "GPT-Interviewer"
+user_name = "User"
 
 
-def ask_penpal(agent: GenerativeAgent, params: dict) -> str:
-    observation = f"{user_name} asks {params['question']}"
+def talk_to_penpal(agent: GenerativeAgent, params: dict) -> str:
+    observation = f"{user_name} says {params['user_input']}"
     return agent.get_penpal_answer(observation, params)
 
 
