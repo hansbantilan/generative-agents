@@ -6,23 +6,15 @@ from streamlit_chat import message
 from generative_agents.modeling.agent_helpers import load_llm, load_pinecone, load_agent
 from generative_agents.utility import logger, well_known_paths
 from generative_agents.utility.utility import load_params
-from generative_agents.modeling.interactions import ask_penpal
+from generative_agents.modeling.interactions import talk_to_penpal, start_conversation_w_penpal
 
 log = logger.init("Streamlit app")
 
-def main():
-    log.info(f"Asking {params['name']} the following question...\n{params['question']}")
-    print(ask_penpal(agent, params))
 
-def generate_response(prompt):
-    res = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=1000,
-        temperature=0.7,
-    )
-    message = res.choices[0].message.content
-    return message
+def generate_response(user_input):
+    res = talk_to_penpal(agent, user_input, params)
+    return res
+
 
 
 st.title("EF PenPal 🤖 ")
@@ -36,18 +28,6 @@ params = load_params(
             f"default.yaml",
         )
     )
-
-if 'generated' not in st.session_state:
-    st.session_state["generated"] = [params['question']]
-
-if "history" not in st.session_state:
-    st.session_state["history"] = []
-
-
-def get_text():
-    input_text = st.text_input("Student [enter your message here]:", "")
-    return input_text
-
 
 
 ### Setup agent ###
@@ -64,16 +44,28 @@ def setup_agent():
 
 agent = setup_agent()
 
+if 'generated' not in st.session_state:
+    st.session_state["generated"] = [start_conversation_w_penpal(agent, params, "Coffee Shop")]
+
+if "history" not in st.session_state:
+    st.session_state["history"] = []
+
+
+def get_text():
+    input_text = st.text_input("Student [enter your message here]:", "")
+    return input_text
+
+
+
 ### Chat interface on streamlit app ###
-initial_question = params['question']
-log.info(f"Asking {params['name']} the following question...\n{params['question']}")
+initial_question = params['user_input']
+log.info(f"Asking {params['name']} the following question...\n{params['user_input']}")
 message(st.session_state["generated"][0], key=str(-1))
 
 user_input = get_text()
 
 if user_input:
-    # output = generate_response(user_input)
-    output = "test"
+    output = generate_response(user_input)
     st.session_state.history.append(user_input)
     st.session_state.generated.append(output)
 
