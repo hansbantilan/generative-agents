@@ -3,7 +3,7 @@ import os
 import pinecone
 from langchain.chat_models import ChatOpenAI
 
-from generative_agents.modeling.interactions import ask_penpal
+from generative_agents.modeling.interactions import talk_to_penpal
 from generative_agents.modeling.langchain_agent import GenerativeAgent
 from generative_agents.modeling.memory import create_new_memory_retriever
 from generative_agents.utility import logger, well_known_paths
@@ -49,5 +49,5 @@ log.info(f"  Adding {params['name']}'s memories...")
 for memory in params["memories"]:
     agent.add_memory(memory)
 
-log.info(f"Asking {params['name']} the following question...\n{params['question']}")
-print(ask_penpal(agent, params))
+log.info(f"Talking to {params['name']}...\n{params['user_input']}")
+print(talk_to_penpal(agent, params))
