@@ -28,6 +28,7 @@ def create_new_memory_retriever(is_pinecone: bool) -> None:
         vectorstore = Pinecone.from_existing_index(
             "generative-agents-index", embeddings_model
         )
+        return vectorstore.as_retriever()
     else:
         index = faiss.IndexFlatL2(embedding_dim)
         vectorstore = FAISS(
@@ -37,6 +38,6 @@ def create_new_memory_retriever(is_pinecone: bool) -> None:
             {},
             relevance_score_fn=relevance_score_fn,
         )
-    return TimeWeightedVectorStoreRetriever(
-        vectorstore=vectorstore, other_score_keys=["importance"], k=15
-    )
+        return TimeWeightedVectorStoreRetriever(
+            vectorstore=vectorstore, other_score_keys=["importance"], k=15
+        )

@@ -5,8 +5,7 @@ from typing import List, Optional, Tuple
 from langchain import LLMChain
 from langchain.base_language import BaseLanguageModel
 from langchain.prompts import PromptTemplate
-from langchain.retrievers import TimeWeightedVectorStoreRetriever
-from langchain.schema import Document
+from langchain.schema import BaseRetriever, Document
 from pydantic import BaseModel, Field
 from termcolor import colored
 
@@ -26,7 +25,7 @@ class GenerativeAgent(BaseModel):
     status: str
     """Current activities of the character."""
     llm: BaseLanguageModel
-    memory_retriever: TimeWeightedVectorStoreRetriever
+    memory_retriever: BaseRetriever
     """The retriever to fetch related memories."""
     verbose: bool = False
 
@@ -161,8 +160,8 @@ class GenerativeAgent(BaseModel):
         ):
             old_status = self.status
             self.status = "Reflecting"
-            self.pause_to_reflect()
-            # Hack to clear the importance from reflection
+            # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
+            # self.pause_to_reflect()
             self.memory_importance = 0.0
             self.status = old_status
         return result
@@ -220,8 +219,9 @@ class GenerativeAgent(BaseModel):
             if mem.page_content in content_strs:
                 continue
             content_strs.add(mem.page_content)
-            created_time = mem.metadata["created_at"].strftime("%B %d, %Y, %I:%M %p")
-            content.append(f"- {created_time}: {mem.page_content.strip()}")
+            # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
+            # created_time = mem.metadata["created_at"].strftime("%B %d, %Y, %I:%M %p")
+            # content.append(f"- {created_time}: {mem.page_content.strip()}")
         return "\n".join([f"{mem}" for mem in content])
 
     def summarize_related_memories(self, observation: str) -> str:
@@ -262,7 +262,8 @@ class GenerativeAgent(BaseModel):
             + "\n{agent_name}'s status: {agent_status}"
             + "\nSummary of relevant context from {agent_name}'s memory:"
             + "\n{relevant_memories}"
-            + "\nMost recent observations: {recent_observations}"
+            # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
+            # + "\nMost recent observations: {recent_observations}"
             + "\nObservation: {observation}"
             + "\n\n"
             + suffix
@@ -278,10 +279,11 @@ class GenerativeAgent(BaseModel):
             observation=observation,
             agent_status=self.status,
         )
-        consumed_tokens = self.llm.get_num_tokens(
-            prompt.format(recent_observations="", **kwargs)
-        )
-        kwargs["recent_observations"] = self._get_memories_until_limit(consumed_tokens)
+        # HB only works with TimeWeightedVectorStoreRetriever so comment out for now
+        # consumed_tokens = self.llm.get_num_tokens(
+        #    prompt.format(recent_observations="", **kwargs)
+        # )
+        # kwargs["recent_observations"] = self._get_memories_until_limit(consumed_tokens)
         action_prediction_chain = LLMChain(llm=self.llm, prompt=prompt)
         result = action_prediction_chain.run(**kwargs)
         return result.strip()
