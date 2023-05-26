@@ -1,0 +1,15 @@
+cefr_levels:
+    - "A1"
+    - "A2"
+    - "B1"
+    - "B2"
+    - "C1"
+    - "C2"
+
+meet_locations:
+    - "Coffee Shop"
+    - "Restaurant"
+    - "Museum"
+    - "Cinema"
+    - "Park"
+
