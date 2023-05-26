@@ -44,4 +44,6 @@ pytest
 Running locally:
 ```
 python workflows/agent/model/conversation.py
+
+python workflows/agent/model/penpal.py
 ```

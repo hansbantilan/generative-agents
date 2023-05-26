@@ -2,13 +2,18 @@ from typing import List
 
 from generative_agents.modeling.langchain_agent import GenerativeAgent
 
-user_name = "GPT-Interviewer"
+user_name = "User"
+
+
+def talk_to_penpal(agent: GenerativeAgent, params: dict) -> str:
+    observation = f"{user_name} says {params['user_input']}"
+    return agent.get_penpal_answer(observation, params)
 
 
 def interview_agent(agent: GenerativeAgent, message: str) -> str:
     """Help the user interact with the agent."""
-    new_message = f"{user_name} says {message}"
-    return agent.generate_dialogue_response(new_message)[1]
+    observation = f"{user_name} says {message}"
+    return agent.generate_dialogue_response(observation)[1]
 
 
 def run_conversation(agents: List[GenerativeAgent], initial_observation: str) -> None:
