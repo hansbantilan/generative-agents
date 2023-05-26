@@ -1,10 +1,14 @@
 from typing import List
 
 from generative_agents.modeling.langchain_agent import GenerativeAgent
+from generative_agents.utility import logger
 
 user_name = "User"
 
+log = logger.init("interactions.py")
+
 def start_conversation_w_penpal(agent: GenerativeAgent, params: dict, location: str) -> str:
+    log.info(location)
     observation = f"You are meeting {user_name} at a location delimited by triple backticks. ```{location}```"
     # TODO get something more relevant to the location, context
     return agent.get_penpal_answer(observation, params)
