@@ -22,7 +22,7 @@ st.sidebar.write("This is a demo of the EF Penpal Chatbot built with ChatGPT, La
 st.sidebar.write("Authors:\n Hans Bantilan, Amrita Panesar")
 st.sidebar.write("*Customize your penpal*")
 customization_options = load_params(os.path.join(
-            well_known_paths["DEMO_DIR"],
+            well_known_paths["PENPAL_APP_DIR"],
             "customization.yaml",
         ))
 
