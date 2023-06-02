@@ -42,7 +42,6 @@ def load_agent(params, llm):
     )
 
     memories = [m.replace("EF-PenPal", name) for m in params["memories"]]
-    log.info("Memories:", memories)
     for memory in memories:
         log.info(f"Adding memory {memory}")
         agent.add_memory(memory)

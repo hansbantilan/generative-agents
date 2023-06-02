@@ -60,15 +60,11 @@ def update_customization_options():
     st.session_state["input_text"] = ""
 
 update_penpal_btn = st.sidebar.button("Create Penpal",
-                                      help="Click to update your penpal with the selected customization options",
+                                      help="Click to customize your penpal.",
                                       on_click=update_customization_options)
 
 if "meet_location" not in st.session_state:
     st.session_state["meet_location"] = customization_options["default_meet_location"]
-
-# if meet_location != st.session_state["meet_location"]:
-#     customization_options_changed = True
-#     st.session_state["meet_location"] = default_meet_location
 
 if "name" not in st.session_state:
     st.session_state["name"] = customization_options["default_name"]
