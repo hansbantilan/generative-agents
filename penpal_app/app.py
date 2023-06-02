@@ -92,7 +92,7 @@ if "language_level_history" not in st.session_state:
 
 styl = f"""
 <style>
-    .stTextInput:last-of-type {{
+    .main .stTextInput {{
       position: fixed;
       bottom: 3rem;
     }}
