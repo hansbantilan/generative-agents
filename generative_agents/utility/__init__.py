@@ -13,5 +13,5 @@ well_known_paths = {
     "WORKFLOW_ROOT": os.path.join(_ROOT, "workflows"),
     "DATASETS_DIR": os.path.join(_ROOT, "datasets/"),
     "PARAMS_DIR": os.path.join(_ROOT, "generative_agents/modeling/params/"),
-    "DEMO_DIR":  os.path.join(_ROOT, "generative_agents/demo/"),
+    "PENPAL_APP_DIR":  os.path.join(_ROOT, "penpal_app/"),
 }

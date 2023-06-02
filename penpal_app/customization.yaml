@@ -13,3 +13,6 @@ meet_locations:
     - "Cinema"
     - "Park"
 
+default_name: "Sally"
+default_cefr_level: "A1"
+default_meet_location: "Coffee Shop"
