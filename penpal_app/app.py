@@ -1,5 +1,4 @@
 import os
-import openai
 import streamlit as st
 from streamlit_chat import message
 
@@ -26,7 +25,8 @@ customization_options = load_params(os.path.join(
             "customization.yaml",
         ))
 
-customization_options_changed = False
+if "customization_options_changed" not in st.session_state:
+    st.session_state.customization_options_changed = False
 
 params = load_params(
         os.path.join(
@@ -36,30 +36,48 @@ params = load_params(
         )
     )
 
-cefr_level = st.sidebar.selectbox("CEFR Level", customization_options["cefr_levels"])
-meet_location = st.sidebar.selectbox("Location of meetup", customization_options["meet_locations"])
-name = st.sidebar.text_input("Name", value=customization_options["default_name"])
+name = st.sidebar.text_input(
+    "Name",
+    value=customization_options["default_name"],
+)
+cefr_level = st.sidebar.selectbox(
+    "CEFR Level",
+    customization_options["cefr_levels"],
+    index=customization_options["cefr_levels"].index(customization_options["default_cefr_level"])
+)
+meet_location = st.sidebar.selectbox(
+    "Location of meetup",
+    customization_options["meet_locations"],
+    index=customization_options["meet_locations"].index(customization_options["default_meet_location"])
+
+)
+
+def update_customization_options():
+    st.session_state["meet_location"] = meet_location
+    st.session_state["name"] = name
+    st.session_state["cefr_level"] = cefr_level
+    st.session_state["customization_options_changed"] = True
+    st.session_state["input_text"] = ""
+
+update_penpal_btn = st.sidebar.button("Create Penpal",
+                                      help="Click to update your penpal with the selected customization options",
+                                      on_click=update_customization_options)
 
 if "meet_location" not in st.session_state:
-    st.session_state["meet_location"] = meet_location
+    st.session_state["meet_location"] = customization_options["default_meet_location"]
 
-if meet_location != st.session_state["meet_location"]:
-    customization_options_changed = True
-    st.session_state["meet_location"] = meet_location
+# if meet_location != st.session_state["meet_location"]:
+#     customization_options_changed = True
+#     st.session_state["meet_location"] = default_meet_location
 
 if "name" not in st.session_state:
     st.session_state["name"] = customization_options["default_name"]
 
-# customizable_params = {}
+if "cefr_level" not in st.session_state:
+    st.session_state["cefr_level"] = customization_options["default_cefr_level"]
 
-if name != st.session_state["name"]:
-    customization_options_changed = True
-    st.session_state["name"] = name
-    log.info("Updating name of agent")
-    params["name"] = name
-
-
-params["level"] = cefr_level # override default level with user customization
+params["name"] = st.session_state["name"] = st.session_state["name"]
+params["level"] = st.session_state["cefr_level"] # override default level with user customization
 
 ### Setup agent ###
 @st.cache_resource
@@ -78,11 +96,16 @@ agent = setup_agent(params)
 if "generated" not in st.session_state:
     st.session_state["generated"] = []
 
-if len(st.session_state["generated"]) == 0 or customization_options_changed:
+# start conversation if app just loaded or customization options for agent have been changed
+if len(st.session_state["generated"]) == 0 or st.session_state.customization_options_changed:
+    st.session_state["language_level_history"] = []
+    st.session_state["history"] = []
+    st.session_state["generated"] = []
     log.info("Starting conversation...")
     initial_agent_response = start_conversation_w_penpal(agent, params, meet_location)
     st.session_state.generated.append(initial_agent_response)
-    customization_options_changed = False
+    st.session_state.customization_options_changed = False
+
 
 if "history" not in st.session_state:
     st.session_state["history"] = []
@@ -96,21 +119,28 @@ styl = f"""
       position: fixed;
       bottom: 3rem;
     }}
+    .main .stButton {{
+      position: fixed;
+      bottom: 3rem;
+    }}
 </style>
 """
 st.markdown(styl, unsafe_allow_html=True)
 
-def get_text():
-    input_text = st.text_input("Student [enter your message here]:", "")
-    return input_text
-
+st.write(f"You are talking to your penpal {st.session_state['name']}.")
 
 ### Chat interface on streamlit app ###
 message(st.session_state["generated"][0], key=str(-1))
 
-user_input = get_text()
+col1, col2 = st.columns([4, 1])
 
-if user_input:
+with col1:
+    user_input = st.text_input("Student [enter your message here]:", "", key="input_text")
+
+with col2:
+    send_button = st.button("Send", key="send_button")
+
+if send_button:
     output = generate_response(user_input)
     # get language level of student thought by ChatGPT
     language_level_prompt = f"""
@@ -134,17 +164,17 @@ if user_input:
 if st.session_state["history"]:
     for i in range(0, len(st.session_state["history"])):
         message(st.session_state["history"][i], is_user=True, key=str(i) + '_user')
-
+        curr_language_level = st.session_state.language_level_history[i]
         # output if language level has significantly changed
         if i == 0:
-            st.write(f"Current language level: {language_level}")
+            st.write(f"Current language level: {curr_language_level}")
         else:
             prev_language_level = st.session_state.language_level_history[i-1]
-            if prev_language_level < language_level:
-                st.write(f"Your language level has increased from {prev_language_level} to {language_level}")
-            elif prev_language_level > language_level:
-                st.write(f"Your language level has decreased from {prev_language_level} to {language_level}")
+            if prev_language_level < curr_language_level:
+                st.write(f"Your language level has increased from {prev_language_level} to {curr_language_level}")
+            elif prev_language_level > curr_language_level:
+                st.write(f"Your language level has decreased from {prev_language_level} to {curr_language_level}")
             else:
-                st.write(f"Your language level has stayed the same at {language_level}")
+                st.write(f"Your language level has stayed the same at {curr_language_level}")
 
         message(st.session_state["generated"][i+1], key=str(i))
