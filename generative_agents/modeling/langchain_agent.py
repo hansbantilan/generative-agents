@@ -28,6 +28,8 @@ class GenerativeAgent(BaseModel):
     memory_retriever: BaseRetriever
     """The retriever to fetch related memories."""
     verbose: bool = False
+    """outputs relevant memories to stdout"""
+    trace: bool = False
 
     reflection_threshold: Optional[float] = None
     """When the total 'importance' of memories exceeds the above threshold, stop to reflect."""
@@ -177,7 +179,8 @@ class GenerativeAgent(BaseModel):
         """Fetch related memories."""
         memories = self.memory_retriever.get_relevant_documents(query=observation)
         memories_str = "\n".join([memory.page_content for memory in memories])
-        log.info(f"  Relevant Memories:\n {memories_str}")
+        if self.trace:
+            log.info(f"  Relevant Memories:\n {memories_str}")
         return memories
 
     def get_summary(self, force_refresh: bool = False) -> str:
