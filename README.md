@@ -41,11 +41,19 @@ pytest
 
 ## Quick Start
 
-Running locally:
+Running a conversation locally:
 ```
 python workflows/agent/model/conversation.py
+```
 
+Running the penpal app locally:
+```
 python workflows/agent/model/penpal.py
 
 streamlit run penpal_app/app.py
+```
+
+Running an interview locally, first add your data file to ~/datasets, then:
+```
+python workflows/agent/model/interview.py
 ```
