@@ -32,6 +32,22 @@ pre-commit install
 pre-commit autoupdate
 ```
 
+### Mac
+
+Set up a Python 3.11 conda environment by making the following local invocations from the terminal:
+
+```
+conda create --name generative_agents_env python=3.11
+
+conda activate generative_agents_env
+
+pip install -e .[mac]
+
+pre-commit install
+
+pre-commit autoupdate
+```
+
 ## Unit tests
 
 After installation, make the following local invocation from the terminal:

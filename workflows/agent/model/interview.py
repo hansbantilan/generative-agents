@@ -43,7 +43,7 @@ def main():
         data = pd.read_csv(file_path)
         memories = list()
         for string in data[params["column_name"]].to_list():
-            memories.append(f"{params['name']} said: " + string)
+            memories.append(f"{params['name']} remembers saying: " + string)
     elif params["data_source"] == "params":
         memories = params["memories"]
     else:
