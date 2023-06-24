@@ -57,9 +57,10 @@ pytest
 
 ## Quick Start
 
-Defining your OpenAI API key, with the following environment variable:
+Defining your API keys with the following environment variable:
 ```
 OPENAI_API_KEY
+ANTHROPIC_API_KEY
 ```
 
 Running a conversation locally:

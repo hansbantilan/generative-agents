@@ -20,16 +20,16 @@ setup(
         "pre-commit==3.2.0",
         "langchain==0.0.180",
         "openai==0.27.4",
+        "anthropic==0.2.10",
         "pinecone-client==2.2.1",
         "termcolor==2.2.0",
         "faiss-cpu==1.7.3",
         "tiktoken==0.3.3",
         "streamlit==1.22.0",
-        "streamlit-chat==0.0.2.2"
+        "streamlit-chat==0.0.2.2",
     ],
     extras_require={
         "mac": [],
-        "linux": [
-        ],
+        "linux": [],
     },
 )

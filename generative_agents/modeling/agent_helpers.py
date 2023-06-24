@@ -1,7 +1,7 @@
 import os
 
 import pinecone
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatAnthropic, ChatOpenAI
 
 from generative_agents.modeling.langchain_agent import GenerativeAgent
 from generative_agents.modeling.memory import create_new_memory_retriever
@@ -9,10 +9,17 @@ from generative_agents.utility import logger
 
 log = logger.init("agent helpers")
 
-def load_llm():
-    log.info(f"Loading LLM...")
-    llm = ChatOpenAI(max_tokens=1000)
+
+def load_llm(llm_type: str):
+    log.info(f"Loading LLM: {llm_type}...")
+    if llm_type == "GPT-3.5-turbo":
+        llm = ChatOpenAI(max_tokens=1000)
+    elif llm_type == "Claude-instant-v1":
+        llm = ChatAnthropic(max_tokens_to_sample=1000)
+    else:
+        raise NotImplementedError("This LLM type is not supported...")
     return llm
+
 
 def load_pinecone():
     log.info(f"Loading Pinecone Vector Database...")
@@ -23,13 +30,16 @@ def load_pinecone():
         log.info(f"Creating generative-agents-index in Pinecone Vector Database...")
         pinecone.create_index("generative-agents-index", dimension=1536)
 
+
 def load_agent(params, llm):
     name = params["name"]
     log.info(f"Instantiating agent: {name}...")
     backstory = params["backstory"].replace("EF-PenPal", name)
     traits = params["traits"].replace("EF-PenPal", name)
     status = params["status"].replace("EF-PenPal", name)
-    daily_summaries = [summary.replace("EF-PenPal", name) for summary in params["daily_summaries"]]
+    daily_summaries = [
+        summary.replace("EF-PenPal", name) for summary in params["daily_summaries"]
+    ]
     agent = GenerativeAgent(
         name=name,
         backstory=backstory,
