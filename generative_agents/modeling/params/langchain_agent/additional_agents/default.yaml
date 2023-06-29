@@ -42,7 +42,7 @@ agents:
             - "GPT-Alex remembers buying Charles Tyrwhitt clothing for her father"
         observations:
             - "GPT-Alex sees the Charles Tyrwhitt store in Jermyn street where all the old stores are"
-            - "GPT-Alex reads that TM Lewin went into administration lately"
+            - "GPT-Alex reads that TM Lewin has filed for bankruptcy"
     matthew:
         name: "GPT-Matthew"
         backstory: "GPT-Matthew is a techno-skeptic who likes making click-clack sounds, creating parenthesises efficiently, and pushing people to join him for PT."
