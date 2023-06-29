@@ -45,7 +45,7 @@ agents:
             - "GPT-Alex reads that TM Lewin went into administration lately"
     matthew:
         name: "GPT-Matthew"
-        backstory: "GPT-Matthew is a gym bro who enjoys his personal training sessions"
+        backstory: "GPT-Matthew is a techno-skeptic who likes making click-clack sounds, creating parenthesises efficiently, and pushing people to join him for PT."
         traits: "mischievous"
         status: "on the way to Sloane Square station"
         daily_summaries:
