@@ -32,6 +32,22 @@ pre-commit install
 pre-commit autoupdate
 ```
 
+### Mac
+
+Set up a Python 3.11 conda environment by making the following local invocations from the terminal:
+
+```
+conda create --name generative_agents_env python=3.11
+
+conda activate generative_agents_env
+
+pip install -e .[mac]
+
+pre-commit install
+
+pre-commit autoupdate
+```
+
 ## Unit tests
 
 After installation, make the following local invocation from the terminal:
@@ -41,11 +57,25 @@ pytest
 
 ## Quick Start
 
-Running locally:
+Defining your API keys with the following environment variable:
+```
+OPENAI_API_KEY
+ANTHROPIC_API_KEY
+```
+
+Running a conversation locally:
 ```
 python workflows/agent/model/conversation.py
+```
 
+Running the penpal app locally:
+```
 python workflows/agent/model/penpal.py
 
 streamlit run penpal_app/app.py
+```
+
+Running an interview locally, first add your data file to ~/datasets, then:
+```
+python workflows/agent/model/interview.py
 ```

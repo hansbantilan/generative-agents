@@ -1,0 +1,25 @@
+### agent version ###
+experiment_name: "Generative Agents"
+run_name: "interview_agent"
+model_output_dir: "tmp/interview_agent"
+data_output_dir : "tmp"
+
+### data parameters ###
+data_source: "local"
+file_name: "dataset_twitter-url-scraper_2023-06-13_08-17-07-854.csv"
+column_name: "full_text"
+
+### model parameters ###
+is_pinecone: False
+user_input: "What's the future of behavioral science?"
+name: "GPT-persona"
+backstory: "Nothing yet"
+traits: "Nothing yet"
+status: "Nothing yet"
+daily_summaries:
+    - "Nothing yet"
+reflection_threshold: 10
+memories:
+    - "Nothing yet"
+observations:
+    - "Nothing yet"
