@@ -5,7 +5,7 @@ model_output_dir: "tmp/langchain_agent"
 data_output_dir : "tmp"
 
 ### model parameters ###
-is_pinecone: True
+is_pinecone: False
 conversation_starter: "GPT-Alex walks up from behind to join GPT-Matthew and GPT-Hans for the walk to Sloane Square station."
 interview_question: "How was your conversation?"
 agents:
