@@ -10,12 +10,12 @@ from generative_agents.utility import logger
 log = logger.init("agent helpers")
 
 
-def load_llm(llm_type: str):
+def load_llm(llm_type: str, temperature: int):
     log.info(f"Loading LLM: {llm_type}...")
     if llm_type == "GPT-3.5-turbo":
-        llm = ChatOpenAI(max_tokens=1000)
+        llm = ChatOpenAI(temperature=temperature)
     elif llm_type == "Claude-instant-v1":
-        llm = ChatAnthropic(max_tokens_to_sample=1000)
+        llm = ChatAnthropic(temperature=temperature)
     else:
         raise NotImplementedError("This LLM type is not supported...")
     return llm

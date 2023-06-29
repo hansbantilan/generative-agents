@@ -1,3 +1,4 @@
+import argparse
 import os
 
 from generative_agents.modeling.agent_helpers import load_agent, load_llm, load_pinecone
@@ -5,11 +6,14 @@ from generative_agents.modeling.interactions import talk_to_penpal
 from generative_agents.utility import logger, well_known_paths
 from generative_agents.utility.utility import load_params
 
-log = logger.init("conversation")
+log = logger.init("Pen Pal")
 
 
-def main():
-    llm = load_llm()
+def main(
+    llm_type: str,
+    temperature: float,
+) -> None:
+    llm = load_llm(llm_type, temperature)
     log.info(f"Loading Parameters...")
     params = load_params(
         os.path.join(
@@ -28,4 +32,26 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Pen Pal")
+    parser.add_argument(
+        "--llmType",
+        default="GPT-3.5-turbo",
+        action="store",
+        dest="llm_type",
+        choices=["GPT-3.5-turbo", "Claude-instant-v1"],
+        help="One of {GPT-3.5-turbo, Claude-instant-v1}",
+    )
+    parser.add_argument(
+        "--temperature",
+        action="store",
+        default=0.9,
+        dest="temperature",
+        type=float,
+        help="A non-negative float that tunes the degree of randomness in generation",
+    )
+
+    args = parser.parse_args()
+    print(vars(args))
+    for k, v in vars(args).items():
+        exec(f"{k} = '{v}'")
+    main(**vars(args))
