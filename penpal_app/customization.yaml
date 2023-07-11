@@ -1,6 +1,7 @@
 llm_types:
     - "GPT-3.5-turbo"
-    - "Claude-instant-v1"
+    - "GPT-4"
+    - "Claude-v1"
 
 cefr_levels:
     - "A1"
