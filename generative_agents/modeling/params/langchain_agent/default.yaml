@@ -6,7 +6,7 @@ data_output_dir : "tmp"
 
 ### model parameters ###
 is_pinecone: True
-conversation_starter: "Kash said: Hi, guys. Thanks for agreeing to give me advice. I have a bunch of questions."
+conversation_starter: "GPT-Amrita said: Hi, guys. Thanks for agreeing to give me advice. I have a bunch of questions."
 interview_question: "How was your conversation?"
 agents:
     amrita:
