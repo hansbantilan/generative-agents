@@ -38,8 +38,8 @@ if __name__ == "__main__":
         default="GPT-3.5-turbo",
         action="store",
         dest="llm_type",
-        choices=["GPT-3.5-turbo", "Claude-instant-v1"],
-        help="One of {GPT-3.5-turbo, Claude-instant-v1}",
+        choices=["GPT-3.5-turbo", "GPT-4", "Claude-v1"],
+        help="One of {GPT-3.5-turbo, GPT-4, Claude-v1}",
     )
     parser.add_argument(
         "--temperature",
