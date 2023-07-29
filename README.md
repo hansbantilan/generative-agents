@@ -65,7 +65,7 @@ ANTHROPIC_API_KEY
 
 Running a conversation locally:
 ```
-python workflows/agent/model/conversation.py --llmType=GPT-3.5-turbo --temperature=0.9
+python workflows/agent/model/conversation.py --llmType=GPT-4 --temperature=0.9
 ```
 
 Running the penpal app locally:
@@ -77,5 +77,5 @@ streamlit run penpal_app/app.py
 
 Running an interview locally, first add your data file to ~/datasets, then:
 ```
-python workflows/agent/model/interview.py --llmType=GPT-3.5-turbo --temperature=0.9
+python workflows/agent/model/interview.py --llmType=Claude-v1 --temperature=0.9
 ```
