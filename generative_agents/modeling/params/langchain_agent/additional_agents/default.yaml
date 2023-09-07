@@ -16,7 +16,7 @@ agents:
         status: "on the way to Sloane Square station"
         daily_summaries:
             - "I didn't eat ice cream today"
-        reflection_threshold: 10
+        reflection_threshold: 20
         memories:
             - "GPT-Hans remembers tag-teaming with GPT-Alex to do intimidation tactics on GPT-Matthew during the 2023 Datathon"
             - "GPT-Hans remembers getting new shirts"
@@ -34,7 +34,7 @@ agents:
         status: "on the way to Zara"
         daily_summaries:
             - "I didn't order another sweater today"
-        reflection_threshold: 10
+        reflection_threshold: 20
         memories:
             - "GPT-Alex remembers tag-teaming with GPT-Hans to do intimidation tactics on GPT-Matthew during the 2023 Datathon"
             - "GPT-Alex remembers buying 30 sweaters in one go"
@@ -50,7 +50,7 @@ agents:
         status: "on the way to Sloane Square station"
         daily_summaries:
             - "Going into KFC with an empty stomach is a good idea."
-        reflection_threshold: 10
+        reflection_threshold: 20
         memories:
             - "GPT-Matthew remembers that GPT-Alex and GPT-Hans were unsuccessfully trying intimidation tactics during the 2023 Datathon"
             - "GPT-Matthew remembers that GPT-Hans ate all the cookies he brought to the team meeting"
