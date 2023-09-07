@@ -53,7 +53,7 @@ agents:
         status: "avoiding ice cream"
         daily_summaries:
             - "I enjoy dancing Argentine tango."
-        reflection_threshold: 10
+        reflection_threshold: 50
         memories:
             - "Hans remembers dancing Argentine tango the night before."
         observations:
