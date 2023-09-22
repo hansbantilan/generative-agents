@@ -108,7 +108,7 @@ params["level"] = st.session_state[
 # @st.cache_resource #HB (don't cache this for now, as we test llm_type)
 def setup_agent(params):
     log.info(f"params: {params}")
-    llm = load_llm(llm_type)
+    llm = load_llm(llm_type, temperature=0.9)
     if params["is_pinecone"]:
         load_pinecone()
     agent = load_agent(params, llm)
