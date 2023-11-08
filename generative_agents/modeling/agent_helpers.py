@@ -14,8 +14,10 @@ def load_llm(llm_type: str, temperature: int):
     log.info(f"Loading LLM: {llm_type}...")
     if llm_type == "GPT-3.5-turbo":
         llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=temperature)
-    elif llm_type == "GPT-4":
-        llm = ChatOpenAI(model_name="gpt-4", temperature=temperature, max_tokens=1000)
+    elif llm_type == "GPT-4-turbo":
+        llm = ChatOpenAI(
+            model_name="gpt-4-1106-preview", temperature=temperature, max_tokens=1000
+        )
     elif llm_type == "Claude-v1":
         llm = ChatAnthropic(model="claude-v1", temperature=temperature)
     else:
