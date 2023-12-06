@@ -5,14 +5,6 @@ import time
 import openai
 
 
-def show_json(obj):
-    display(json.loads(obj.model_dump_json()))
-
-
-def get_response(thread):
-    return client.beta.threads.messages.list(thread_id=thread.id)
-
-
 def submit_message(assistant_id, thread, user_message):
     client.beta.threads.messages.create(
         thread_id=thread.id, role="user", content=user_message
@@ -23,9 +15,14 @@ def submit_message(assistant_id, thread, user_message):
     )
 
 
-def create_thread_and_run(user_input, assistant):
+def create_thread_and_run(user_message, assistant):
     thread = client.beta.threads.create()
-    run = submit_message(assistant.id, thread, user_input)
+    run = submit_message(assistant.id, thread, user_message)
+    return thread, run
+
+
+def continue_thread_and_run(thread, user_message, assistant):
+    run = submit_message(assistant.id, thread, user_message)
     return thread, run
 
 
@@ -39,7 +36,17 @@ def wait_on_run(run, thread):
     return run
 
 
-def pretty_print(messages):
+def show_json(obj):
+    display(json.loads(obj.model_dump_json()))
+
+
+def show_messages(thread):
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+    show_json(messages)
+
+
+def show_response(thread):
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
     print("# Messages")
     for m in messages:
         print(f"{m.role}: {m.content[0].text.value}")
@@ -70,4 +77,5 @@ show_json(assistant)
 
 thread, run = create_thread_and_run("What data does tours_data.json have?", assistant)
 run = wait_on_run(run, thread)
-pretty_print(get_response(thread))
+show_response(thread)
+show_messages(thread)
