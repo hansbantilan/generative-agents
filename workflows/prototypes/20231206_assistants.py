@@ -78,41 +78,30 @@ repeat_gls_hist_data = client.files.create(
     ),
     purpose="assistants",
 )
+repeat_gls_hist_data = client.files.create(
+    file=open(
+        "repeat_gls_hist.json",
+        "rb",
+    ),
+    purpose="assistants",
+)
+
 
 # Create Assistant
 assistant = client.beta.assistants.create(
-    name="ToursGPT",
+    name="TC-Assistant",
     model="gpt-4-1106-preview",
-    instructions="You help with tour selection and tour consultation at a company that sells educational tours.",
-    tools=[{"type": "retrieval"}],
+    instructions="You help with tour selection and tour consultation at a company that sells educational tours. gl_profiles.json gives information about the customers who are teachers, and subject name is what the teacher teaches. Some of the teachers are repeating customers and repeat_gls_hist.json shows their past trips. tours_data.json shows the different tourcodes available and their details.",
+    tools=[{"type": "retrieval"}, {"type": "code_interpreter"}],
     file_ids=[tours_data.id, gl_profiles_data.id, repeat_gls_hist_data.id],
 )
 show_json(assistant)
 
+# prompt for top-10 recommendations for each GL
 thread, run = create_thread_and_run(
-    "What can you tell me about the customer with id_28?", assistant
+    "Based on the tours that customers with id_0 to id_100 has participated in in the past (from the file repeat_gls_hist.json) and their subject name, for each customer recommend 10 tours with tourcode and tournames . Output the list with individual id and tourcodes in json format.",
+    assistant,
 )
 run = wait_on_run(run, thread)
 show_response(thread)
-show_messages(thread)
-
-thread, run = create_thread_and_run(
-    "In which files do you see the customer id_28?", assistant
-)
-run = wait_on_run(run, thread)
-show_response(thread)
-show_messages(thread)
-###
-thread, run1 = continue_thread_and_run(
-    thread, "What is the gender of customer id_28?", assistant
-)
-run1 = wait_on_run(run1, thread)
-show_response(thread)
-show_messages(thread)
-###
-thread, run2 = continue_thread_and_run(
-    thread, "Which tourcodes does customer id_28 appear on?", assistant
-)
-run2 = wait_on_run(run2, thread)
-show_response(thread)  # ground truth: IGX VTX SCIR EXG EAF PSF RAX
 show_messages(thread)
