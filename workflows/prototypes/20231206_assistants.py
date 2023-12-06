@@ -57,9 +57,23 @@ def show_response(thread):
 client = openai.Client(api_key=os.getenv("OPENAI_API_KEY"))
 
 # Upload the file
-file = client.files.create(
+tours_data = client.files.create(
     file=open(
         "tours_data.json",
+        "rb",
+    ),
+    purpose="assistants",
+)
+gl_profiles_data = client.files.create(
+    file=open(
+        "gl_profiles.json",
+        "rb",
+    ),
+    purpose="assistants",
+)
+repeat_gls_hist_data = client.files.create(
+    file=open(
+        "repeat_gls_hist.json",
         "rb",
     ),
     purpose="assistants",
@@ -69,13 +83,15 @@ file = client.files.create(
 assistant = client.beta.assistants.create(
     name="ToursGPT",
     model="gpt-4-1106-preview",
-    instructions="You are a member of a company that sells educational tours that helps with tour selection and tour consultation",
+    instructions="You help with tour selection and tour consultation at a company that sells educational tours.",
     tools=[{"type": "retrieval"}],
-    file_ids=[file.id],
+    file_ids=[tours_data.id, gl_profiles_data.id, repeat_gls_hist_data.id],
 )
 show_json(assistant)
 
-thread, run = create_thread_and_run("What data does tours_data.json have?", assistant)
+thread, run = create_thread_and_run(
+    "What data does repeat_gls_hist.json have?", assistant
+)
 run = wait_on_run(run, thread)
 show_response(thread)
 show_messages(thread)
