@@ -90,8 +90,29 @@ assistant = client.beta.assistants.create(
 show_json(assistant)
 
 thread, run = create_thread_and_run(
-    "What data does repeat_gls_hist.json have?", assistant
+    "What can you tell me about the customer with id_28?", assistant
 )
 run = wait_on_run(run, thread)
 show_response(thread)
+show_messages(thread)
+
+thread, run = create_thread_and_run(
+    "In which files do you see the customer id_28?", assistant
+)
+run = wait_on_run(run, thread)
+show_response(thread)
+show_messages(thread)
+###
+thread, run1 = continue_thread_and_run(
+    thread, "What is the gender of customer id_28?", assistant
+)
+run1 = wait_on_run(run1, thread)
+show_response(thread)
+show_messages(thread)
+###
+thread, run2 = continue_thread_and_run(
+    thread, "Which tourcodes does customer id_28 appear on?", assistant
+)
+run2 = wait_on_run(run2, thread)
+show_response(thread)  # ground truth: IGX VTX SCIR EXG EAF PSF RAX
 show_messages(thread)
