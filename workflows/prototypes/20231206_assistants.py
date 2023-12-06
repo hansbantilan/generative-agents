@@ -1,3 +1,4 @@
+import ast
 import json
 import os
 import time
@@ -91,17 +92,33 @@ repeat_gls_hist_data = client.files.create(
 assistant = client.beta.assistants.create(
     name="TC-Assistant",
     model="gpt-4-1106-preview",
-    instructions="You help with tour selection and tour consultation at a company that sells educational tours. gl_profiles.json gives information about the customers who are teachers, and subject name is what the teacher teaches. Some of the teachers are repeating customers and repeat_gls_hist.json shows their past trips. tours_data.json shows the different tourcodes available and their details.",
+    instructions="Based on the tours that customers with id_0 to id_99 has participated in in the past (from the file repeat_gls_hist.json) and their subject name, for each customer recommend 10 tours with tourcode and tournames. Don't produce same tours for everybody, you can be creative. You should produce recommendations for all of 100 customers. Output the list with individual id and tourcodes in json format.",
     tools=[{"type": "retrieval"}, {"type": "code_interpreter"}],
     file_ids=[tours_data.id, gl_profiles_data.id, repeat_gls_hist_data.id],
 )
 show_json(assistant)
 
 # prompt for top-10 recommendations for each GL
-thread, run = create_thread_and_run(
-    "Based on the tours that customers with id_0 to id_100 has participated in in the past (from the file repeat_gls_hist.json) and their subject name, for each customer recommend 10 tours with tourcode and tournames . Output the list with individual id and tourcodes in json format.",
+thread, run1 = create_thread_and_run(
+    "Based on the tours that customers with id_0 to id_99 has participated in in the past (from the file repeat_gls_hist.json) and their subject name, for each customer recommend 10 tours with tourcode and tournames. Don't produce same tours for everybody, you can be creative. You should produce recommendations for all of 100 customers. Output the list with individual id and tourcodes in csv format, where every row should be id, and every column should be tourcode. If you recommend a tour for a customer that cell should be 1, otherwise 0.",
     assistant,
 )
-run = wait_on_run(run, thread)
+run1 = wait_on_run(run1, thread)
 show_response(thread)
-show_messages(thread)
+
+# prompt for a downloadable file
+thread, run2 = continue_thread_and_run(
+    thread,
+    "Please provide the full json recommendation data for all customers with IDs ranging from `id_0` to `id_99`. Output in the file_id of the resulting file.",
+    assistant,
+)
+run2 = wait_on_run(run2, thread)
+show_response(thread)
+
+# retrieve file contents
+messages = client.beta.threads.messages.list(thread_id=thread.id)
+for message in messages:
+    file_id = message.file_ids[0]
+    break
+results_str = client.files.retrieve_content(file_id)
+results_dict = ast.literal_eval(results_str)
