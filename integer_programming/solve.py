@@ -19,7 +19,6 @@ class IntegerProgrammingSolver:
         self.c_array = np.tile(np.array(self.coefs), self.num_gl)
         self.b_eq = np.mat([1] * 100)
         self.b_ub = self.df["new_capacity"].to_list()
-        print("hop")
 
     # fill upper bound matrix
     def fill_A_ub(self):
