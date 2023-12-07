@@ -92,7 +92,7 @@ repeat_gls_hist_data = client.files.create(
 assistant = client.beta.assistants.create(
     name="TC-Assistant",
     model="gpt-4-1106-preview",
-    instructions="Based on the tours that customers with id_0 to id_99 has participated in in the past (from the file repeat_gls_hist.json) and their subject name, for each customer recommend 10 tours with tourcode and tournames. Don't produce same tours for everybody, you can be creative. You should produce recommendations for all of 100 customers. Output the list with individual id and tourcodes in json format.",
+    instructions="You help with tour selection and tour consultation at a company that sells educational tours. gl_profiles.csv gives information about the customers who are teachers, and subject name is what the teacher teaches.  Some of the teachers are repeating customers and repeat_gls_hist.csv shows their past trips.",
     tools=[{"type": "retrieval"}, {"type": "code_interpreter"}],
     file_ids=[tours_data.id, gl_profiles_data.id, repeat_gls_hist_data.id],
 )
@@ -109,7 +109,7 @@ show_response(thread)
 # prompt for a downloadable file
 thread, run2 = continue_thread_and_run(
     thread,
-    "Please provide the full json recommendation data for all customers with IDs ranging from `id_0` to `id_99`. Output in the file_id of the resulting file.",
+    "Please provide the full recommendation data for all customers with IDs ranging from `id_0` to `id_99`. Output in the file_id of the resulting file.",
     assistant,
 )
 run2 = wait_on_run(run2, thread)
@@ -128,4 +128,4 @@ print(results_str)
 results_df = pd.read_csv(StringIO(results_str))
 print("Results DataFrame:\n")
 print(results_df)
-results_df.to_csv("tour_recommendations_matrix.csv")
+results_df.to_csv("tmp/tour_recommendations_matrix.csv")
