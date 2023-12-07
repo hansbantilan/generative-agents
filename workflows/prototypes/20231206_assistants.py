@@ -1,9 +1,9 @@
-import ast
-import json
 import os
 import time
+from io import StringIO
 
 import openai
+import pandas as pd
 
 
 def submit_message(assistant_id, thread, user_message):
@@ -37,13 +37,13 @@ def wait_on_run(run, thread):
     return run
 
 
-def show_json(obj):
-    display(json.loads(obj.model_dump_json()))
+# def show_json(obj):
+#    display(json.loads(obj.model_dump_json()))
 
 
 def show_messages(thread):
     messages = client.beta.threads.messages.list(thread_id=thread.id)
-    show_json(messages)
+    # show_json(messages)
 
 
 def show_response(thread):
@@ -96,7 +96,7 @@ assistant = client.beta.assistants.create(
     tools=[{"type": "retrieval"}, {"type": "code_interpreter"}],
     file_ids=[tours_data.id, gl_profiles_data.id, repeat_gls_hist_data.id],
 )
-show_json(assistant)
+# show_json(assistant)
 
 # prompt for top-10 recommendations for each GL
 thread, run1 = create_thread_and_run(
@@ -121,4 +121,7 @@ for message in messages:
     file_id = message.file_ids[0]
     break
 results_str = client.files.retrieve_content(file_id)
-results_dict = ast.literal_eval(results_str)
+
+# save file contents
+df = pd.read_csv(StringIO(results_str))
+df.to_csv("tour_recommendations_matrix.csv")
