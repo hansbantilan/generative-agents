@@ -23,12 +23,11 @@ def process_data(df, tours, recs):
     df = df[df[" TLTV "] != "  "]
     df[" TLTV "] = df[" TLTV "].apply(lambda x: float(x.strip().replace(",", ".")))
     df = df.rename(columns={" TLTV ": "TLTV"})
+    df["TLTV"] = df["TLTV"] * 1000
     recs = recs[0:100]  # drop the extra customer gpt produces at the end
 
     # take the tours that having tltv + GPT recommended
-    tours_to_take = recs.columns.drop("id")[
-        (recs.columns.drop("id").isin(df["Tour Family"]))
-    ]
+    tours_to_take = recs.columns[(recs.columns.isin(df["Tour Family"]))]
     recs = recs[["id"] + list(tours_to_take)]
     recs_matrix = recs.drop(columns="id")
     recs_list = recs_matrix.values.tolist()
