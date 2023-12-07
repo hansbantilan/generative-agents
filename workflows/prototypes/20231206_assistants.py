@@ -121,7 +121,11 @@ for message in messages:
     file_id = message.file_ids[0]
     break
 results_str = client.files.retrieve_content(file_id)
+print("Results String:\n")
+print(results_str)
 
 # save file contents
-df = pd.read_csv(StringIO(results_str))
-df.to_csv("tour_recommendations_matrix.csv")
+results_df = pd.read_csv(StringIO(results_str))
+print("Results DataFrame:\n")
+print(results_df)
+results_df.to_csv("tour_recommendations_matrix.csv")
