@@ -35,11 +35,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pen Pal")
     parser.add_argument(
         "--llmType",
-        default="GPT-3.5-turbo",
+        default="GPT-4o",
         action="store",
         dest="llm_type",
-        choices=["GPT-3.5-turbo", "GPT-4-turbo", "Claude-v1"],
-        help="One of {GPT-3.5-turbo, GPT-4-turbo, Claude-v1}",
+        choices=["GPT-3.5-turbo", "GPT-4-turbo", "GPT-4o", "Claude-v1"],
+        help="One of {GPT-3.5-turbo, GPT-4-turbo, GPT-4o, Claude-v1}",
     )
     parser.add_argument(
         "--temperature",

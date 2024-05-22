@@ -1,7 +1,7 @@
 import os
 
-import pinecone
 from langchain.chat_models import ChatAnthropic, ChatOpenAI
+from pinecone import Pinecone, ServerlessSpec
 
 from generative_agents.modeling.langchain_agent import GenerativeAgent
 from generative_agents.modeling.memory import create_new_memory_retriever
@@ -18,6 +18,8 @@ def load_llm(llm_type: str, temperature: int):
         llm = ChatOpenAI(
             model_name="gpt-4-1106-preview", temperature=temperature, max_tokens=1000
         )
+    elif llm_type == "GPT-4o":
+        llm = ChatOpenAI(model_name="gpt-4o", temperature=temperature)
     elif llm_type == "Claude-v1":
         llm = ChatAnthropic(model="claude-v1", temperature=temperature)
     else:
@@ -27,12 +29,19 @@ def load_llm(llm_type: str, temperature: int):
 
 def load_pinecone():
     log.info(f"Loading Pinecone Vector Database...")
-    pinecone.init(
+    pc = Pinecone(
         api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv("PINECONE_ENV")
     )
-    if "generative-agents-index" not in pinecone.list_indexes():
+    if "generative-agents-index" not in [
+        d.get("name") for d in pc.list_indexes().get("indexes")
+    ]:
         log.info(f"Creating generative-agents-index in Pinecone Vector Database...")
-        pinecone.create_index("generative-agents-index", dimension=1536)
+        pc.create_index(
+            name="generative-agents-index",
+            dimension=1536,
+            metric="cosine",
+            spec=ServerlessSpec(cloud="aws", region="us-east-1"),
+        )
 
 
 def load_agent(params, llm):
