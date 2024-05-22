@@ -65,12 +65,12 @@ ANTHROPIC_API_KEY
 
 Running a conversation locally:
 ```
-python workflows/agent/model/conversation.py --llmType=GPT-4-turbo --temperature=0.9
+python workflows/agent/model/conversation.py --llmType=GPT-4o --temperature=0.9
 ```
 
 Running the penpal app locally:
 ```
-python workflows/agent/model/penpal.py --llmType=GPT-3.5-turbo --temperature=0.9
+python workflows/agent/model/penpal.py --llmType=GPT-4o --temperature=0.9
 
 streamlit run penpal_app/app.py
 ```

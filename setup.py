@@ -18,10 +18,11 @@ setup(
     ],
     install_requires=[
         "pre-commit==3.2.0",
-        "langchain==0.0.346",
+        "langchain==0.2.0",
+        "langchain-community==0.2.0",
         "openai==1.3.7",
         "anthropic==0.7.7",
-        "pinecone-client==2.2.4",
+        "pinecone-client==4.1.0",
         "termcolor==2.2.0",
         "faiss-cpu==1.7.4",
         "tiktoken==0.3.3",
